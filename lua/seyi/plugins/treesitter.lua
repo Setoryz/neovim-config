@@ -6,7 +6,6 @@ return {
     "windwp/nvim-ts-autotag",
     "mustache/vim-mustache-handlebars",
   },
-
   config = function()
     -- import nvim-treesitter plugin
     local treesitter = require("nvim-treesitter.configs")
@@ -20,10 +19,22 @@ return {
       },
       -- enable indentation
       indent = { enable = true },
+
       -- enable autotagging (w/ nvim-ts-autotag plugin)
-      autotag = {
-        enable = true,
-      },
+      -- This now has to be done with autotag directly and i moved this to autotag.lua
+      --autotag = {
+      --  enable = true,
+      --},
+
+      -- Automatically install missing parsers when entering buffer
+      -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+      auto_install = true,
+
+      -- Install parsers synchronously (only applied to `ensure_installed`)
+      sync_install = false,
+
+      ignore_install = {},
+
       -- ensure these language parsers are installed
       ensure_installed = {
         "json",
