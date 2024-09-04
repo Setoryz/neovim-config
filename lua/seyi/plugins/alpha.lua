@@ -16,7 +16,7 @@ return {
       "  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝ ",
       "                                                     ",
     }
-    
+
     -- Set menu
     dashboard.section.buttons.val = {
       dashboard.button("e", "  > New File", "<cmd>ene<CR>"),
@@ -34,4 +34,3 @@ return {
     vim.cmd([[autocmd FileType alpha setlocal nofoldenable]])
   end,
 }
-
