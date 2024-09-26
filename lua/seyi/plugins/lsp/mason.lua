@@ -37,7 +37,9 @@ return {
         "quick_lint_js",
         "svelte",
         "tailwindcss",
-        "tsserver",
+        "ts_ls",
+        -- "tsserver",
+        "yamlls",
       },
     })
 
