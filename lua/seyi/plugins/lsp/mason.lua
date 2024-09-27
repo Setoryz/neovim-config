@@ -38,7 +38,6 @@ return {
         "svelte",
         "tailwindcss",
         "ts_ls",
-        -- "tsserver",
         "yamlls",
       },
     })
