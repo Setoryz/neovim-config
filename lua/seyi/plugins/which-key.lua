@@ -6,6 +6,15 @@ return {
     vim.o.timeoutlen = 500
   end,
   opts = {
-    -- your configuration comes here or leave it emppty to use the default settings or 
+    -- your configuration comes here or leave it emppty to use the default settings or
+  },
+  keys = {
+    {
+      "<leader>?",
+      function()
+        require("which-key").show({ global = false })
+      end,
+      desc = "Buffer Local Keymaps (which-key)",
+    },
   },
 }
