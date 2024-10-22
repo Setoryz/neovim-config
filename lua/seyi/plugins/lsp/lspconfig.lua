@@ -5,6 +5,7 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     { "antosha417/nvim-lsp-file-operations", config = true },
     { "folke/neodev.nvim", opts = {} },
+    "b0o/schemastore.nvim",
   },
   config = function()
     -- import lspconfig plugin
@@ -12,6 +13,7 @@ return {
 
     -- import mason_lspconfig plugin
     local mason_lspconfig = require("mason-lspconfig")
+    local schemastore = require("schemastore")
 
     -- import cmp-nvim-lsp plugin
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
@@ -138,6 +140,18 @@ return {
               },
             },
           },
+        })
+      end,
+      ["jsonls"] = function()
+        --- configure json language server for config and json files
+        lspconfig["jsonls"].setup({
+          settings = {
+            json = {
+              schemas = schemastore.json.schemas(),
+              validate = { enable = true },
+            },
+          },
+          capabilities = capabilities,
         })
       end,
     })
