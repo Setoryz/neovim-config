@@ -47,3 +47,13 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
   desc = "Set conceallevel to 2 for Markdown and Obsidian files",
 })
+
+-- Disable concealment for JSON files
+vim.api.nvim_create_autocmd("FileType", {
+  group = "ConcealSettings",
+  pattern = "json",
+  callback = function()
+    vim.opt_local.conceallevel = 0
+  end,
+  desc = "Disable concealment for JSON files",
+})
