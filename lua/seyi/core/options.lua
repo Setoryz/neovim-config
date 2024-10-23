@@ -34,3 +34,16 @@ opt.clipboard:append("unnamedplus") -- use system clipboard as default register
 -- split windows
 opt.splitright = true -- split vertical windows to the right
 opt.splitbelow = true -- split horizontal windows to the bottom
+
+-- Configure conceal level markdown
+vim.api.nvim_create_augroup("ConcealSettings", { clear = true })
+
+-- Set conceallevel=2 for Markdown and Obsidian Files
+vim.api.nvim_create_autocmd("FileType", {
+  group = "ConcealSettings",
+  pattern = { "markdown", "obsidian" },
+  callback = function()
+    vim.opt_local.conceallevel = 3
+  end,
+  desc = "Set conceallevel to 2 for Markdown and Obsidian files",
+})
