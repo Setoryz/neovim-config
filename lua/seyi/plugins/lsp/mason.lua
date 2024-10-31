@@ -31,6 +31,7 @@ return {
         "emmet_ls",
         "html",
         "graphql",
+        "jsonls",
         "lua_ls",
         "prismals",
         "pyright",
