@@ -43,7 +43,7 @@ vim.api.nvim_create_autocmd("FileType", {
   group = "ConcealSettings",
   pattern = { "markdown", "obsidian" },
   callback = function()
-    vim.opt_local.conceallevel = 3
+    vim.opt_local.conceallevel = 2
   end,
   desc = "Set conceallevel to 2 for Markdown and Obsidian files",
 })
