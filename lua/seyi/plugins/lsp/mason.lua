@@ -45,6 +45,7 @@ return {
 
     mason_tool_installer.setup({
       ensure_installed = {
+        "prettierd", -- prettierd formatter
         "prettier", -- prettier formatter
         "stylua", -- python formatter
         "isort", -- python formatter

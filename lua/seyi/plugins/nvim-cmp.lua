@@ -14,6 +14,7 @@ return {
     "saadparwaiz1/cmp_luasnip", -- for autocompletion
     "rafamadriz/friendly-snippets", -- useful snippets
     "onsails/lspkind.nvim", -- vs-code like pictograms
+    { "roobert/tailwindcss-colorizer-cmp.nvim", config = true }, -- tailwindcss colorizer
   },
   config = function()
     local cmp = require("cmp")
@@ -21,6 +22,10 @@ return {
     local luasnip = require("luasnip")
 
     local lspkind = require("lspkind")
+    local tailwind_colorizer = require("tailwindcss-colorizer-cmp")
+    tailwind_colorizer.setup({
+      color_square_width = 2,
+    })
 
     -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
     require("luasnip.loaders.from_vscode").lazy_load()
@@ -52,10 +57,21 @@ return {
       }),
       -- configure lspkind for vs-code like pictograms in completion menu
       formatting = {
-        format = lspkind.cmp_format({
-          maxwidth = 50,
-          ellipsis_char = "...",
-        }),
+        -- format = lspkind.cmp_format({
+        --   maxwidth = 50,
+        --   ellipsis_char = "...",
+        -- }),
+        format = function(entry, vim_item)
+          -- first apply the tailwindcss formatter
+          vim_item = tailwind_colorizer.formatter(entry, vim_item)
+          -- then apply the lspkind formatter
+          return lspkind.cmp_format({
+            maxwidth = 50,
+            ellipsis_char = "...",
+          })(entry, vim_item)
+        end,
+        fields = { "abbr", "kind", "menu" },
+        expandable_indicator = true,
       },
     })
   end,

@@ -1,5 +1,6 @@
 return {
   "folke/tokyonight.nvim",
+  dependencies = { "petertriho/nvim-scrollbar" },
   priority = 1000,
   config = function()
     local transparent = true
@@ -13,6 +14,8 @@ return {
     local fg_dark = "#B4D0E9"
     local fg_gutter = "#627E97"
     local border = "#547998"
+
+    require("scrollbar").setup()
 
     require("tokyonight").setup({
       style = "night",
