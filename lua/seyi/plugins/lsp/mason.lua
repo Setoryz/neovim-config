@@ -27,6 +27,7 @@ return {
     mason_lspconfig.setup({
       -- list of servers for mason to install
       ensure_installed = {
+        "ansiblels",
         "cssls",
         "emmet_ls",
         "html",
@@ -39,12 +40,14 @@ return {
         "svelte",
         "tailwindcss",
         "ts_ls",
+        "terraformls",
         "yamlls",
       },
     })
 
     mason_tool_installer.setup({
       ensure_installed = {
+        "ansible-lint",
         "prettierd", -- prettierd formatter
         "prettier", -- prettier formatter
         "stylua", -- python formatter
