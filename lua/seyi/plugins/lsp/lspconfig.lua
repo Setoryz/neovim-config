@@ -87,6 +87,11 @@ return {
           capabilities = capabilities,
         })
       end,
+      ["terraformls"] = function()
+        lspconfig["terraformls"].setup({
+          capabilities = capabilities,
+        })
+      end,
       ["ts_ls"] = function()
         -- configure typescript language server
         lspconfig["ts_ls"].setup({
