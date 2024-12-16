@@ -47,7 +47,7 @@ return {
 
     mason_tool_installer.setup({
       ensure_installed = {
-        "ansible-lint",
+        "ansible-lint", -- ansible linter
         "prettierd", -- prettierd formatter
         "prettier", -- prettier formatter
         "stylua", -- python formatter
@@ -55,6 +55,7 @@ return {
         "black", -- python formatter
         "pylint", -- python linter
         "eslint_d", -- js linter
+        "tflint", -- terraform linter
       },
     })
   end,
