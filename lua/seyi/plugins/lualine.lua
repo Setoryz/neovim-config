@@ -53,13 +53,20 @@ return {
     lualine.setup({
       options = {
         theme = my_lualine_theme,
+        section_separators = { left = "", right = "" },
+        component_separators = { left = "", right = "" },
       },
       -- sections and plugins that need update
       sections = {
-        lualine_c = {
-          { "filename", path = 1 },
-        },
+        lualine_c = { "filename" },
         lualine_x = {
+          {
+            "filename",
+            path = 1,
+            color = { bg = colors.green, fg = colors.bg },
+          },
+        },
+        lualine_y = {
           {
             lazy_status.updates,
             cond = lazy_status.has_updates,
@@ -69,6 +76,7 @@ return {
           { "fileformat" },
           { "filetype" },
         },
+        lualine_z = { "tabs" },
       },
     })
   end,
