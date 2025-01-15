@@ -92,6 +92,13 @@ return {
           capabilities = capabilities,
         })
       end,
+      ["ansiblels"] = function()
+        lspconfig["ansiblels"].setup({
+          capabilities = capabilities,
+          filetypes = { "yaml", "yml", "ansible" },
+          root_dir = lspconfig.util.root_pattern("roles", "playbooks", "inventory"),
+        })
+      end,
       ["ts_ls"] = function()
         -- configure typescript language server
         lspconfig["ts_ls"].setup({
