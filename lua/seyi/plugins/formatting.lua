@@ -6,6 +6,7 @@ return {
 
     conform.setup({
       formatters_by_ft = {
+        ["yaml.ansible"] = { "prettier", "prettierd" },
         javascript = { "prettierd", "prettier" },
         typescript = { "prettierd", "prettier" },
         javascriptreact = { "prettierd", "prettier" },
