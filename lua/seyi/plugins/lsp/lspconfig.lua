@@ -95,8 +95,28 @@ return {
       ["ansiblels"] = function()
         lspconfig["ansiblels"].setup({
           capabilities = capabilities,
-          filetypes = { "yaml", "yml", "ansible" },
+          filetypes = { "yaml.ansible" },
           root_dir = lspconfig.util.root_pattern("roles", "playbooks", "inventory"),
+          settings = {
+            ansible = {
+              ansible = {
+                path = "ansible",
+              },
+              executionEnvironment = {
+                enabled = false,
+              },
+              python = {
+                interpreterPath = "python",
+              },
+              validation = {
+                enabled = true,
+                lint = {
+                  enabled = true,
+                  path = "ansible-lint",
+                },
+              },
+            },
+          },
         })
       end,
       ["ts_ls"] = function()
