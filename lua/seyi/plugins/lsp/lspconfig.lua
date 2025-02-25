@@ -119,6 +119,47 @@ return {
           },
         })
       end,
+      ["yamlls"] = function()
+        lspconfig["yamlls"].setup({
+          settings = {
+            yaml = {
+              schemastore = {
+                -- You must disable built-in schemaStore support if you want to use
+                -- this plugin and its advanced options like `ignore`.
+                enable = false,
+                -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+                url = "",
+              },
+              -- schemas = schemastore.yaml.schemas(),
+              schemas = vim.tbl_deep_extend("force", schemastore.yaml.schemas(), {
+                -- kubernetes = "k8s-*.yaml",
+                kubernetes = {
+                  "k8s-*.yaml",
+                  "k8s-*/**/*.yaml",
+                  "!kustomization.{yml,yaml}",
+                  "!application.{yml,yaml}",
+                  "!app-of-apps.{yml,yaml}",
+                  "!*-appset.{yml,yaml}",
+                },
+                ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
+                ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
+                ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/**/*.{yml,yaml}",
+                ["http://json.schemastore.org/prettierrc"] = ".prettierrc.{yml,yaml}",
+                ["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
+                ["https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json"] = {
+                  "k8s-*/**/application.{yml,yaml}",
+                  "k8s-*/**/app-of-apps.{yml,yaml}",
+                },
+                ["https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/applicationset_v1alpha1.json"] = {
+                  "k8s-*/**/*-appset.{yml,yaml}",
+                },
+                ["http://json.schemastore.org/chart"] = "Chart.{yml,yaml}",
+                ["http://json.schemastore.org/circleciconfig"] = ".circleci/**/*.{yml,yaml}",
+              }),
+            },
+          },
+        })
+      end,
       ["ts_ls"] = function()
         -- configure typescript language server
         lspconfig["ts_ls"].setup({
