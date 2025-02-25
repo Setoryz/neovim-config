@@ -1,10 +1,15 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  -- lazy = false,
   event = { "BufReadPre", "BufNewFile" },
   build = ":TSUpdate",
   dependencies = {
     "windwp/nvim-ts-autotag",
     "mustache/vim-mustache-handlebars",
+    {
+      "nvim-treesitter/nvim-treesitter-context",
+      opts = {},
+    },
   },
   config = function()
     -- import nvim-treesitter plugin
