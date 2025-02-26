@@ -42,6 +42,7 @@ return {
         "ts_ls",
         "terraformls",
         "yamlls",
+        "gopls",
       },
     })
 

@@ -10,6 +10,7 @@ return {
   config = function()
     -- import lspconfig plugin
     local lspconfig = require("lspconfig")
+    local util = require("lspconfig/util")
 
     -- import mason_lspconfig plugin
     local mason_lspconfig = require("mason-lspconfig")
@@ -70,6 +71,7 @@ return {
     })
 
     -- used to enable autocompletion (assign to every lsp server config)
+    -- local attach = lspconfig.on_attach
     local capabilities = cmp_nvim_lsp.default_capabilities()
 
     -- Change the Diagnostic symbols in the sign column (gutter)
@@ -225,6 +227,25 @@ return {
             },
           },
           capabilities = capabilities,
+        })
+      end,
+      ["gopls"] = function()
+        -- configure gopls for go
+        lspconfig["gopls"].setup({
+          -- on_attach = on_attach
+          capabilities = capabilities,
+          cmd = { "gopls" },
+          filetypes = { "go", "gomod", "gowork", "gotmpl" },
+          root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+          settings = {
+            gopls = {
+              completeUnimported = true,
+              usePlaceholders = true,
+              analyses = {
+                unusedparams = true,
+              },
+            },
+          },
         })
       end,
     })
