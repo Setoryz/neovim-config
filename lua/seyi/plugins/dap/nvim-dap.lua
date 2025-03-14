@@ -49,14 +49,20 @@ return {
     opts.desc = "Continue"
     keymap.set("n", "<leader>dbc", dap.continue, opts)
 
-    opts.desc = "Toggle Breakpoint"
-    keymap.set("n", "<leader>dbb", dap.toggle_breakpoint, opts)
-
     opts.desc = "Step Over"
     keymap.set("n", "<leader>dbo", dap.step_over, opts)
 
     opts.desc = "Step Into"
     keymap.set("n", "<leader>dbi", dap.step_into, opts)
+
+    opts.desc = "Step Out"
+    keymap.set("n", "<leader>dbx", dap.step_out, opts)
+
+    opts.desc = "Toggle Breakpoint"
+    keymap.set("n", "<leader>dbb", dap.toggle_breakpoint, opts)
+
+    opts.desc = "Set Breakpoint"
+    keymap.set("n", "<leader>dbd", dap.set_breakpoint, opts)
 
     opts.desc = "Open REPL"
     keymap.set("n", "<leader>dbr", dap.repl.open, opts)
