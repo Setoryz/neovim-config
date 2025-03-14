@@ -24,3 +24,7 @@ keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) -- g
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) -- go to previous tab
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) -- open current buffer in new tab
 
+-- Exit Terminal
+keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { noremap = true, silent = true, desc = "Exit Terminal mode" })
+keymap.set("t", "jkjk", "<C-\\><C-n>", { noremap = true, silent = true, desc = "Exit Terminal mode" })
+keymap.set("t", "kjkj", "<C-\\><C-n>", { noremap = true, silent = true, desc = "Exit Terminal mode" })
