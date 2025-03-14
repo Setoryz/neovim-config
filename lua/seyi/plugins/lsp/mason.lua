@@ -58,6 +58,8 @@ return {
         "eslint_d", -- js linter
         "tflint", -- terraform linter
         "yamlfmt", -- yaml, ansible
+        "gopls", -- go, lsp
+        "delve", -- go debugger
       },
     })
   end,

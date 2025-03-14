@@ -24,6 +24,7 @@ return {
         python = { "isort", "black" },
         -- terraform
         terraform = { "terraform_fmt" },
+        go = { "gofmt" },
       },
       format_on_save = {
         lsp_fallback = true,
