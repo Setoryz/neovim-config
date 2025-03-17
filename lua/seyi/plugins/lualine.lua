@@ -89,7 +89,7 @@ return {
           {
             "filename",
             path = 1,
-            color = { bg = colors.green, fg = colors.bg, gui = "bold" },
+            color = { bg = colors.blue, fg = colors.bg, gui = "bold" },
           },
         },
       },
