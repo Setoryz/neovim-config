@@ -49,12 +49,13 @@ return {
       },
     }
 
-    -- configyre lualine modified theme
+    -- configure lualine modified theme
     lualine.setup({
       options = {
         theme = my_lualine_theme,
         section_separators = { left = "", right = "" },
         component_separators = { left = "", right = "" },
+        globalstatus = true,
       },
       -- sections and plugins that need update
       sections = {
@@ -77,6 +78,27 @@ return {
           { "filetype" },
         },
         lualine_z = { "tabs" },
+      },
+      refresh = {
+        statusline = 100,
+        tabline = 100,
+        winbar = 100,
+      },
+      winbar = {
+        lualine_c = {
+          {
+            "filename",
+            path = 1,
+            color = { bg = colors.green, fg = colors.bg, gui = "bold" },
+          },
+        },
+      },
+      inactive_winbar = {
+        lualine_c = {
+          {
+            "filename",
+          },
+        },
       },
     })
   end,
