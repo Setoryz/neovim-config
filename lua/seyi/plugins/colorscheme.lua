@@ -6,6 +6,7 @@ return {
     local transparent = true
 
     local bg = "#011628"
+    local bg_sidebar = "#090909"
     local bg_dark = "#011423"
     local bg_highlight = "#143652"
     local bg_search = "#0A64AC"
@@ -31,7 +32,7 @@ return {
         colors.bg_highlight = bg_highlight
         colors.bg_popup = bg_dark
         colors.bg_search = bg_search
-        colors.bg_sidebar = bg_dark
+        colors.bg_sidebar = bg_sidebar
         colors.bg_statusline = bg_dark
         colors.bg_visual = bg_visual
         colors.border = border
