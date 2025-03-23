@@ -28,6 +28,7 @@ return {
             },
           },
         },
+        group_empty = true,
       },
 
       -- disable window_picker for explorer to work well with window split
@@ -39,10 +40,15 @@ return {
         },
       },
       filters = {
+        -- dotfiles = true,
         custom = { ".DS_Store" },
       },
       git = {
         ignore = false,
+      },
+
+      sort = {
+        sorter = "case_sensitive",
       },
     })
 
