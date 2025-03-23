@@ -43,6 +43,7 @@ return {
         "terraformls",
         "yamlls",
         "gopls",
+        "sqlls",
       },
     })
 
@@ -60,6 +61,7 @@ return {
         "yamlfmt", -- yaml, ansible
         "gopls", -- go, lsp
         "delve", -- go debugger
+        "sqlfluff", -- sql linter
       },
     })
   end,

@@ -250,6 +250,12 @@ return {
           },
         })
       end,
+      ["sqlls"] = function()
+        -- configure sqlls for sql
+        lspconfig["sqlls"].setup({
+          capabilities = capabilities,
+        })
+      end,
     })
   end,
 }
