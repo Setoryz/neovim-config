@@ -3,7 +3,9 @@ vim.g.mapleader = " "
 local keymap = vim.keymap -- for conciseness
 
 keymap.set("i", "kj", "<ESC>", { desc = "Exit insert mode with jk" })
+keymap.set("i", "KJ", "<ESC>", { desc = "Exit insert mode with jk" })
 keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
+keymap.set("i", "JK", "<ESC>", { desc = "Exit insert mode with jk" })
 
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
@@ -28,3 +30,10 @@ keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer
 keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { noremap = true, silent = true, desc = "Exit Terminal mode" })
 keymap.set("t", "jkjk", "<C-\\><C-n>", { noremap = true, silent = true, desc = "Exit Terminal mode" })
 keymap.set("t", "kjkj", "<C-\\><C-n>", { noremap = true, silent = true, desc = "Exit Terminal mode" })
+
+local opts = { noremap = true, silent = true }
+
+-- Bufferline related keymaps
+-- Define keymaps with descriptions
+opts.desc = "Bufferline Pick"
+keymap.set("n", "<leader>bl", "<cmd>BufferLinePick<CR>", opts)
