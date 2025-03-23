@@ -25,6 +25,17 @@ return {
         -- terraform
         terraform = { "terraform_fmt" },
         go = { "gofmt" },
+        golang = { "gofmt" },
+        sql = { "sleek" },
+      },
+      formatters = {
+        sleek = {
+          command = "sleek",
+          args = "--indent-spaces=4 --lines-between-queries=3 -U -n",
+        },
+        sqlfluff = {
+          args = { "format", "--dialect=postgres", "-" },
+        },
       },
       format_on_save = {
         lsp_fallback = true,
