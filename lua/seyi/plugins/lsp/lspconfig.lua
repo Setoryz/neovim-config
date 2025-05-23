@@ -3,6 +3,7 @@ return {
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     "hrsh7th/cmp-nvim-lsp",
+    "mason-org/mason-lspconfig.nvim",
     { "antosha417/nvim-lsp-file-operations", config = true },
     { "folke/neodev.nvim", opts = {} },
     "b0o/schemastore.nvim",
@@ -13,7 +14,6 @@ return {
     local util = require("lspconfig/util")
 
     -- import mason_lspconfig plugin
-    local mason_lspconfig = require("mason-lspconfig")
     local schemastore = require("schemastore")
 
     -- import cmp-nvim-lsp plugin
@@ -76,190 +76,196 @@ return {
 
     -- Change the Diagnostic symbols in the sign column (gutter)
     -- (not in youtube nvim video)
-    local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
+    local signs = {
+      Error = " ",
+      Warn = " ",
+      Hint = " ",
+      Info = " ",
+    }
     vim.diagnostic.config({
       signs = {
-        [vim.diagnostic.severity.ERROR] = signs.Error,
-        [vim.diagnostic.severity.WARN] = signs.Warn,
-        [vim.diagnostic.severity.HINT] = signs.Hint,
-        [vim.diagnostic.severity.INFO] = signs.Info,
+        text = {
+          [vim.diagnostic.severity.ERROR] = signs.Error,
+          [vim.diagnostic.severity.WARN] = signs.Warn,
+          [vim.diagnostic.severity.HINT] = signs.Hint,
+          [vim.diagnostic.severity.INFO] = signs.Info,
+        },
+        text_hl = {
+          [vim.diagnostic.severity.ERROR] = "Error",
+          [vim.diagnostic.severity.WARN] = "Warn",
+          [vim.diagnostic.severity.HINT] = "Hint",
+          [vim.diagnostic.severity.INFO] = "Info",
+        },
+        numhl = {
+          [vim.diagnostic.severity.ERROR] = "",
+          [vim.diagnostic.severity.WARN] = "",
+          [vim.diagnostic.severity.HINT] = "",
+          [vim.diagnostic.severity.INFO] = "",
+        },
+      },
+      underline = true,
+      virtual_text = true,
+    })
+
+    -- mason_lspconfig.setup_handlers({
+    --   -- default handler for installed servers
+    --   function(server_name)
+    --     vim.lsp.enable(server_name)
+    --   end,
+    -- })
+
+    vim.lsp.config("terraformls", {
+      capabilities = capabilities,
+    })
+
+    vim.lsp.config("ansiblels", {
+      capabilities = capabilities,
+      filetypes = { "yaml.ansible" },
+      root_dir = lspconfig.util.root_pattern("roles", "playbooks", "inventory"),
+      settings = {
+        ansible = {
+          ansible = {
+            path = "ansible",
+          },
+          executionEnvironment = {
+            enabled = false,
+          },
+          python = {
+            interpreterPath = "python",
+          },
+          validation = {
+            enabled = true,
+            lint = {
+              enabled = true,
+              path = "ansible-lint",
+            },
+          },
+        },
       },
     })
 
-    mason_lspconfig.setup_handlers({
-      -- default handler for installed servers
-      function(server_name)
-        lspconfig[server_name].setup({
-          capabilities = capabilities,
-        })
-      end,
-      ["terraformls"] = function()
-        lspconfig["terraformls"].setup({
-          capabilities = capabilities,
-        })
-      end,
-      ["ansiblels"] = function()
-        lspconfig["ansiblels"].setup({
-          capabilities = capabilities,
-          filetypes = { "yaml.ansible" },
-          root_dir = lspconfig.util.root_pattern("roles", "playbooks", "inventory"),
-          settings = {
-            ansible = {
-              ansible = {
-                path = "ansible",
-              },
-              executionEnvironment = {
-                enabled = false,
-              },
-              python = {
-                interpreterPath = "python",
-              },
-              validation = {
-                enabled = true,
-                lint = {
-                  enabled = true,
-                  path = "ansible-lint",
-                },
-              },
-            },
+    vim.lsp.config("yamlls", {
+      settings = {
+        yaml = {
+          schemastore = {
+            -- You must disable built-in schemaStore support if you want to use
+            -- this plugin and its advanced options like `ignore`.
+            enable = false,
+            -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+            url = "",
           },
-        })
-      end,
-      ["yamlls"] = function()
-        lspconfig["yamlls"].setup({
-          settings = {
-            yaml = {
-              schemastore = {
-                -- You must disable built-in schemaStore support if you want to use
-                -- this plugin and its advanced options like `ignore`.
-                enable = false,
-                -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
-                url = "",
-              },
-              -- schemas = schemastore.yaml.schemas(),
-              schemas = vim.tbl_deep_extend("force", schemastore.yaml.schemas(), {
-                -- kubernetes = "k8s-*.yaml",
-                kubernetes = {
-                  "k8s-*.yaml",
-                  "k8s-*/**/*.yaml",
-                  "!kustomization.{yml,yaml}",
-                  "!application.{yml,yaml}",
-                  "!app-of-apps.{yml,yaml}",
-                  "!*-appset.{yml,yaml}",
-                },
-                ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
-                ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
-                ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/**/*.{yml,yaml}",
-                ["http://json.schemastore.org/prettierrc"] = ".prettierrc.{yml,yaml}",
-                ["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
-                ["https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json"] = {
-                  "k8s-*/**/application.{yml,yaml}",
-                  "k8s-*/**/app-of-apps.{yml,yaml}",
-                },
-                ["https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/applicationset_v1alpha1.json"] = {
-                  "k8s-*/**/*-appset.{yml,yaml}",
-                },
-                ["http://json.schemastore.org/chart"] = "Chart.{yml,yaml}",
-                ["http://json.schemastore.org/circleciconfig"] = ".circleci/**/*.{yml,yaml}",
-              }),
+          -- schemas = schemastore.yaml.schemas(),
+          schemas = vim.tbl_deep_extend("force", schemastore.yaml.schemas(), {
+            -- kubernetes = "k8s-*.yaml",
+            kubernetes = {
+              "k8s-*.yaml",
+              "k8s-*/**/*.yaml",
+              "!kustomization.{yml,yaml}",
+              "!application.{yml,yaml}",
+              "!app-of-apps.{yml,yaml}",
+              "!*-appset.{yml,yaml}",
             },
-          },
-        })
-      end,
-      ["ts_ls"] = function()
-        -- configure typescript language server
-        lspconfig["ts_ls"].setup({
-          capabilities = capabilities,
-          -- on_attach = function(client, bufnr)
-          --
-          -- end,
-        })
-      end,
-      ["svelte"] = function()
-        -- configure svelte server
-        lspconfig["svelte"].setup({
-          capabilities = capabilities,
-          on_attach = function(client, bufnr)
-            vim.api.nvim_create_autocmd("BufWritePost", {
-              pattern = { "*.js", "*.ts" },
-              callback = function(ctx)
-                -- Here use ctx.match instead of ctx.file
-                client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
-              end,
-            })
+            ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
+            ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
+            ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/**/*.{yml,yaml}",
+            ["http://json.schemastore.org/prettierrc"] = ".prettierrc.{yml,yaml}",
+            ["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
+            ["https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json"] = {
+              "k8s-*/**/application.{yml,yaml}",
+              "k8s-*/**/app-of-apps.{yml,yaml}",
+            },
+            ["https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/applicationset_v1alpha1.json"] = {
+              "k8s-*/**/*-appset.{yml,yaml}",
+            },
+            ["http://json.schemastore.org/chart"] = "Chart.{yml,yaml}",
+            ["http://json.schemastore.org/circleciconfig"] = ".circleci/**/*.{yml,yaml}",
+          }),
+        },
+      },
+    })
+
+    -- configure typescript language server
+    vim.lsp.config("ts_ls", {
+      capabilities = capabilities,
+      -- on_attach = function(client, bufnr) end,
+    })
+
+    -- configure svelte server
+    vim.lsp.config("svelte", {
+      capabilities = capabilities,
+      on_attach = function(client, bufnr)
+        vim.api.nvim_create_autocmd("BufWritePost", {
+          pattern = { "*.js", "*.ts" },
+          callback = function(ctx)
+            -- Here use ctx.match instead of ctx.file
+            client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
           end,
         })
       end,
-      ["graphql"] = function()
-        -- configure graphql language server
-        lspconfig["graphql"].setup({
-          capabilities = capabilities,
-          filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
-        })
-      end,
-      ["emmet_ls"] = function()
-        -- configure emmet language server
-        lspconfig["emmet_ls"].setup({
-          capabilities = capabilities,
-          filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
-        })
-      end,
-      ["lua_ls"] = function()
-        -- configure lua server (with special settings)
-        lspconfig["lua_ls"].setup({
-          capabilities = capabilities,
-          settings = {
-            Lua = {
-              -- make the language server recognize "vim" global
-              diagnostics = {
-                globals = { "vim" },
-              },
-              completion = {
-                callSnippet = "Replace",
-              },
-            },
+    })
+
+    -- configure graphql language server
+    vim.lsp.config("graphql", {
+      capabilities = capabilities,
+      filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
+    })
+
+    -- configure emmet language server
+    vim.lsp.config("emmet_ls", {
+      capabilities = capabilities,
+      filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
+    })
+
+    -- configure lua server (with special settings)
+    vim.lsp.config("lua_ls", {
+      capabilities = capabilities,
+      settings = {
+        Lua = {
+          -- make the language server recognize "vim" global
+          diagnostics = {
+            globals = { "vim" },
           },
-        })
-      end,
-      ["jsonls"] = function()
-        --- configure json language server for config and json files
-        lspconfig["jsonls"].setup({
-          settings = {
-            json = {
-              schemas = schemastore.json.schemas(),
-              validate = { enable = true },
-            },
+          completion = {
+            callSnippet = "Replace",
           },
-          capabilities = capabilities,
-        })
-      end,
-      ["gopls"] = function()
-        -- configure gopls for go
-        lspconfig["gopls"].setup({
-          -- on_attach = on_attach
-          capabilities = capabilities,
-          cmd = { "gopls" },
-          filetypes = { "go", "gomod", "gowork", "gotmpl" },
-          root_dir = util.root_pattern("go.work", "go.mod", ".git"),
-          settings = {
-            gopls = {
-              completeUnimported = true,
-              usePlaceholders = true,
-              analyses = {
-                unusedparams = true,
-              },
-              staticcheck = true,
-              gofumpt = true,
-            },
+        },
+      },
+    })
+
+    --- configure json language server for config and json files
+    vim.lsp.config("jsonls", {
+      settings = {
+        json = {
+          schemas = schemastore.json.schemas(),
+          validate = { enable = true },
+        },
+      },
+      capabilities = capabilities,
+    })
+
+    -- configure gopls for go
+    vim.lsp.config("gopls", {
+      -- on_attach = on_attach
+      capabilities = capabilities,
+      cmd = { "gopls" },
+      filetypes = { "go", "gomod", "gowork", "gotmpl" },
+      root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+      settings = {
+        gopls = {
+          completeUnimported = true,
+          usePlaceholders = true,
+          analyses = {
+            unusedparams = true,
           },
-        })
-      end,
-      ["sqlls"] = function()
-        -- configure sqlls for sql
-        lspconfig["sqlls"].setup({
-          capabilities = capabilities,
-        })
-      end,
+          staticcheck = true,
+          gofumpt = true,
+        },
+      },
+    })
+
+    -- configure sqlls for sql
+    vim.lsp.config("sqlls", {
+      capabilities = capabilities,
     })
   end,
 }
