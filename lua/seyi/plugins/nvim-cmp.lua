@@ -50,6 +50,7 @@ return {
       }),
       -- sources for autocompletion
       sources = cmp.config.sources({
+        { name = "codeium" },
         { name = "nvim_lsp" },
         { name = "luasnip" }, -- snippets
         { name = "buffer" }, -- text within current buffer
@@ -68,6 +69,7 @@ return {
           return lspkind.cmp_format({
             maxwidth = 50,
             ellipsis_char = "...",
+            symbol_map = { Codeium = "" },
           })(entry, vim_item)
         end,
         fields = { "abbr", "kind", "menu" },
