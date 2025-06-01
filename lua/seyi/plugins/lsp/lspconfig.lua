@@ -7,11 +7,21 @@ return {
     { "antosha417/nvim-lsp-file-operations", config = true },
     { "folke/neodev.nvim", opts = {} },
     "b0o/schemastore.nvim",
+    {
+      "SmiteshP/nvim-navbuddy",
+      dependencies = {
+        "SmiteshP/nvim-navic",
+        "MunifTanjim/nui.nvim",
+      },
+      opts = { lsp = { auto_attach = true } },
+    },
   },
   config = function()
     -- import lspconfig plugin
     local lspconfig = require("lspconfig")
     local util = require("lspconfig/util")
+    local navbuddy = require("nvim-navbuddy")
+    local nvim_navic = require("nvim-navic")
 
     -- import mason_lspconfig plugin
     local schemastore = require("schemastore")
@@ -113,13 +123,20 @@ return {
     --     vim.lsp.enable(server_name)
     --   end,
     -- })
-
+    local on_attach = function(client, bufnr)
+      if client.server_capabilities.documentSymbolProvider then
+        nvim_navic.attach(client, bufnr)
+        -- navbuddy.attach(client.bufnr)
+      end
+    end
     vim.lsp.config("terraformls", {
       capabilities = capabilities,
+      on_attach = on_attach,
     })
 
     vim.lsp.config("ansiblels", {
       capabilities = capabilities,
+      on_attach = on_attach,
       filetypes = { "yaml.ansible" },
       root_dir = lspconfig.util.root_pattern("roles", "playbooks", "inventory"),
       settings = {
@@ -145,6 +162,7 @@ return {
     })
 
     vim.lsp.config("yamlls", {
+      on_attach = on_attach,
       settings = {
         yaml = {
           schemastore = {
@@ -219,6 +237,7 @@ return {
     -- configure lua server (with special settings)
     vim.lsp.config("lua_ls", {
       capabilities = capabilities,
+      on_attach = on_attach,
       settings = {
         Lua = {
           -- make the language server recognize "vim" global

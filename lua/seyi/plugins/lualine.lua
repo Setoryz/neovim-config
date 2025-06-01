@@ -1,6 +1,6 @@
 return {
   "nvim-lualine/lualine.nvim",
-  dependencies = { "nvim-tree/nvim-web-devicons" },
+  dependencies = { "nvim-tree/nvim-web-devicons", "SmiteshP/nvim-navic" },
   config = function()
     local lualine = require("lualine")
     local lazy_status = require("lazy.status") -- to configure lazy pending updates count
@@ -59,7 +59,17 @@ return {
       },
       -- sections and plugins that need update
       sections = {
-        lualine_c = { "filename" },
+        lualine_c = {
+          "filename",
+          {
+            function()
+              return require("nvim-navic").get_location()
+            end,
+            cond = function()
+              return require("nvim-navic").is_available()
+            end,
+          },
+        },
         lualine_x = {
           {
             "filename",
