@@ -137,8 +137,8 @@ return {
     vim.lsp.config("ansiblels", {
       capabilities = capabilities,
       on_attach = on_attach,
-      filetypes = { "yaml.ansible" },
-      root_dir = lspconfig.util.root_pattern("roles", "playbooks", "inventory"),
+      filetypes = { "yaml.ansible", "yaml" },
+      root_dir = lspconfig.util.root_pattern("roles", "playbooks", "inventory", "ansible", "*ansible.cfg"),
       settings = {
         ansible = {
           ansible = {
@@ -185,7 +185,6 @@ return {
             },
             ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
             ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
-            ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/**/*.{yml,yaml}",
             ["http://json.schemastore.org/prettierrc"] = ".prettierrc.{yml,yaml}",
             ["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
             ["https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json"] = {
