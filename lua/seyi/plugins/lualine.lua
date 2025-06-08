@@ -49,6 +49,19 @@ return {
       },
     }
 
+    local last_update = 0
+    local cached_result = " --"
+
+    local function wakatime_today()
+      local now = os.time()
+      if now - last_update > 300 then -- refresh every 5 mins
+        local result = vim.fn.system("~/.wakatime/wakatime-cli --today")
+        cached_result = " " .. result:gsub("\n", ""):gsub("^.*:%s*", "")
+        last_update = now
+      end
+      return cached_result
+    end
+
     -- configure lualine modified theme
     lualine.setup({
       options = {
@@ -61,6 +74,11 @@ return {
       sections = {
         lualine_c = {
           "filename",
+          {
+            function()
+              return wakatime_today()
+            end,
+          },
           {
             function()
               return require("nvim-navic").get_location()
