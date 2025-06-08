@@ -54,7 +54,7 @@ return {
 
     local function wakatime_today()
       local now = os.time()
-      if now - last_update > 300 then -- refresh every 30 seconds
+      if now - last_update > 300 then -- refresh every 5 mins
         local result = vim.fn.system("~/.wakatime/wakatime-cli --today")
         cached_result = " " .. result:gsub("\n", ""):gsub("^.*:%s*", "")
         last_update = now
