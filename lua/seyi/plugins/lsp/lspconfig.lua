@@ -174,14 +174,11 @@ return {
           },
           -- schemas = schemastore.yaml.schemas(),
           schemas = vim.tbl_deep_extend("force", schemastore.yaml.schemas(), {
-            -- kubernetes = "k8s-*.yaml",
-            kubernetes = {
+            [require("kubernetes").yamlls_schema()] = {
               "k8s-*.yaml",
               "k8s-*/**/*.yaml",
               "!kustomization.{yml,yaml}",
-              "!application.{yml,yaml}",
-              "!app-of-apps.{yml,yaml}",
-              "!*-appset.{yml,yaml}",
+              "!*-values.{yml,yaml}",
             },
             ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
             ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
