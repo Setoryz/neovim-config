@@ -43,4 +43,7 @@ keymap.set("n", "<leader>bl", "<cmd>BufferLinePick<CR>", opts)
 -- Save without formatting
 opts.desc = "Save without formatting"
 keymap.set("n", "<leader>nfs", ":noautocmd w<CR>", opts)
-keymap.set("n", "<leader>nss", ":noautocmd w<CR>", opts)
+
+-- Save with formatting
+-- opts.desc = "Save with formatting"
+keymap.set("n", "<leader>nss", ":w<CR>", opts)
