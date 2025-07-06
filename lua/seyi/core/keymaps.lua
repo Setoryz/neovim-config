@@ -37,3 +37,10 @@ local opts = { noremap = true, silent = true }
 -- Define keymaps with descriptions
 opts.desc = "Bufferline Pick"
 keymap.set("n", "<leader>bl", "<cmd>BufferLinePick<CR>", opts)
+
+-- Other keymaps
+
+-- Save without formatting
+opts.desc = "Save without formatting"
+keymap.set("n", "<leader>nfs", ":noautocmd w<CR>", opts)
+keymap.set("n", "<leader>nss", ":noautocmd w<CR>", opts)
