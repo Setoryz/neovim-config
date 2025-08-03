@@ -1,4 +1,5 @@
 return {
-  "stevearc/dressing.nvim",
-  event = "VeryLazy",
+  -- DEPRECATED FOR SNACKS.NVIM
+  -- "stevearc/dressing.nvim",
+  -- event = "VeryLazy",
 }
