@@ -126,7 +126,7 @@ return {
     local on_attach = function(client, bufnr)
       if client.server_capabilities.documentSymbolProvider then
         nvim_navic.attach(client, bufnr)
-        -- navbuddy.attach(client.bufnr)
+        navbuddy.attach(client, bufnr)
       end
     end
     vim.lsp.config("terraformls", {
@@ -200,6 +200,7 @@ return {
 
     -- configure typescript language server
     vim.lsp.config("ts_ls", {
+      on_attach = on_attach,
       capabilities = capabilities,
       -- on_attach = function(client, bufnr) end,
     })
@@ -208,6 +209,10 @@ return {
     vim.lsp.config("svelte", {
       capabilities = capabilities,
       on_attach = function(client, bufnr)
+        if client.server_capabilities.documentSymbolProvider then
+          nvim_navic.attach(client, bufnr)
+          navbuddy.attach(client, bufnr)
+        end
         vim.api.nvim_create_autocmd("BufWritePost", {
           pattern = { "*.js", "*.ts" },
           callback = function(ctx)
@@ -220,20 +225,22 @@ return {
 
     -- configure graphql language server
     vim.lsp.config("graphql", {
+      on_attach = on_attach,
       capabilities = capabilities,
       filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
     })
 
     -- configure emmet language server
     vim.lsp.config("emmet_ls", {
+      on_attach = on_attach,
       capabilities = capabilities,
       filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
     })
 
     -- configure lua server (with special settings)
     vim.lsp.config("lua_ls", {
-      capabilities = capabilities,
       on_attach = on_attach,
+      capabilities = capabilities,
       settings = {
         Lua = {
           -- make the language server recognize "vim" global
@@ -249,18 +256,19 @@ return {
 
     --- configure json language server for config and json files
     vim.lsp.config("jsonls", {
+      on_attach = on_attach,
+      capabilities = capabilities,
       settings = {
         json = {
           schemas = schemastore.json.schemas(),
           validate = { enable = true },
         },
       },
-      capabilities = capabilities,
     })
 
     -- configure gopls for go
     vim.lsp.config("gopls", {
-      -- on_attach = on_attach
+      on_attach = on_attach,
       capabilities = capabilities,
       cmd = { "gopls" },
       filetypes = { "go", "gomod", "gowork", "gotmpl" },
@@ -280,6 +288,7 @@ return {
 
     -- configure sqlls for sql
     vim.lsp.config("sqlls", {
+      on_attach = on_attach,
       capabilities = capabilities,
     })
   end,
