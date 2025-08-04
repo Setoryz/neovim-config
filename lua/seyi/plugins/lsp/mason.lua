@@ -29,6 +29,8 @@ return {
       ensure_installed = {
         "ansiblels",
         "cssls",
+        "dockerls",
+        "eslint",
         "emmet_ls",
         "html",
         "graphql",
@@ -56,7 +58,7 @@ return {
         "isort", -- python formatter
         "black", -- python formatter
         "pylint", -- python linter
-        "eslint_d", -- js linter
+        -- "eslint_d", -- js linter -- USE eslint from lspconfig
         "tflint", -- terraform linter
         "yamlfmt", -- yaml, ansible
         "gopls", -- go, lsp
