@@ -83,6 +83,10 @@ return {
     -- used to enable autocompletion (assign to every lsp server config)
     -- local attach = lspconfig.on_attach
     local capabilities = cmp_nvim_lsp.default_capabilities()
+    capabilities.textDocument.foldingRange = {
+      dynamicRegistration = false,
+      lineFoldingOnly = true,
+    }
 
     -- Change the Diagnostic symbols in the sign column (gutter)
     -- (not in youtube nvim video)
@@ -201,8 +205,14 @@ return {
     -- configure typescript language server
     vim.lsp.config("ts_ls", {
       on_attach = on_attach,
+      filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
       capabilities = capabilities,
-      -- on_attach = function(client, bufnr) end,
+    })
+
+    -- Configure Eslint
+    vim.lsp.config("eslint", {
+      on_attach = on_attach,
+      capabilities = capabilities,
     })
 
     -- configure svelte server
