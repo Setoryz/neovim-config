@@ -45,5 +45,5 @@ opts.desc = "Save without formatting"
 keymap.set("n", "<leader>nfs", ":noautocmd w<CR>", opts)
 
 -- Save with formatting
--- opts.desc = "Save with formatting"
+opts.desc = "Save with formatting"
 keymap.set("n", "<leader>nss", ":w<CR>", opts)
