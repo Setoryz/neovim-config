@@ -15,6 +15,7 @@ require("lazy").setup({
   { import = "seyi.plugins" },
   { import = "seyi.plugins.lsp" },
   { import = "seyi.plugins.dap" },
+  { import = "seyi.plugins.test" },
 }, {
   checker = {
     enabled = true,
