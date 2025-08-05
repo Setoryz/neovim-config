@@ -3,17 +3,14 @@ return {
   dependencies = {
     "mfussenegger/nvim-dap",
     "nvim-neotest/nvim-nio",
-    "leoluz/nvim-dap-go",
   },
   config = function()
     --- import dap and dapui
     local dap = require("dap")
     local dapui = require("dapui")
-    local dapgo = require("dap-go")
 
     -- setup dapui
     dapui.setup()
-    dapgo.setup()
 
     -- Automatically open and close dapui when debugging starts/stops
     dap.listeners.after.event_initialized["dapui_config"] = function()

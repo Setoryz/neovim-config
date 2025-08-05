@@ -4,12 +4,16 @@ return {
   dependencies = {
     "rcarriga/nvim-dap-ui",
     "jay-babu/mason-nvim-dap.nvim",
+    "leoluz/nvim-dap-go",
     { "theHamsta/nvim-dap-virtual-text", config = true }, -- Shows constant or variable value on the line
   },
   config = function()
     -- import required modules
     local dap = require("dap")
     local dapui = require("dapui")
+
+    local dapgo = require("dap-go")
+    dapgo.setup()
 
     -- Define signs for breakpoint
     vim.fn.sign_define("DapBreakpoint", { text = "🔴", texthl = "", linehl = "", numhl = "" })
