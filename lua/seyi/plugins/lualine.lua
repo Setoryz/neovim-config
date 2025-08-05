@@ -65,6 +65,8 @@ return {
       return cached_result
     end
 
+    --- Get current cursor position for statusline and winbar display
+    ---@return string
     local function get_cursor_position()
       local pos = vim.api.nvim_win_get_cursor(0)
       local line = vim.api.nvim_get_current_line()
