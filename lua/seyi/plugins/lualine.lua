@@ -51,8 +51,11 @@ return {
 
     local last_update = 0
     local cached_result = " --"
+    local updating = false -- TODO: Use this to make get wakatime stats non ui blocking
 
-    local function wakatime_today()
+    --- Function to get wakatime stats for current day
+    --- @returns string
+    local function get_wakatime_daily_stats()
       local now = os.time()
       if now - last_update > 300 then -- refresh every 5 mins
         local result = vim.fn.system("~/.wakatime/wakatime-cli --today")
@@ -60,6 +63,13 @@ return {
         last_update = now
       end
       return cached_result
+    end
+
+    local function get_cursor_position()
+      local pos = vim.api.nvim_win_get_cursor(0)
+      local line = vim.api.nvim_get_current_line()
+      local col = line:sub(1, pos[2]):len()
+      return " " .. col .. " : " .. pos[1]
     end
 
     -- configure lualine modified theme
@@ -76,8 +86,9 @@ return {
           "filename",
           {
             function()
-              return wakatime_today()
+              return get_cursor_position()
             end,
+            color = { bg = colors.bg, fg = colors.violet },
           },
           {
             function()
@@ -90,9 +101,9 @@ return {
         },
         lualine_x = {
           {
-            "filename",
-            path = 1,
-            color = { bg = colors.green, fg = colors.bg },
+            function()
+              return get_wakatime_daily_stats()
+            end,
           },
         },
         lualine_y = {
@@ -119,6 +130,12 @@ return {
             path = 1,
             color = { bg = colors.blue, fg = colors.bg, gui = "bold" },
           },
+          {
+            function()
+              return get_cursor_position()
+            end,
+            color = { bg = colors.bg, fg = colors.violet },
+          },
         },
       },
       inactive_winbar = {
@@ -126,6 +143,11 @@ return {
           {
             "filename",
             path = 1,
+          },
+          {
+            function()
+              return get_cursor_position()
+            end,
           },
         },
       },
