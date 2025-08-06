@@ -1,5 +1,17 @@
 return {
   "diogo464/kubernetes.nvim",
+  cond = function()
+    -- Run `kubectl config current-context` and check for success
+    local handle = io.popen("kubectl config current-context 2>/dev/null")
+    if not handle then
+      return false
+    end
+
+    local result = handle:read("*a")
+    handle:close()
+
+    return result ~= nil and result ~= ""
+  end,
   opts = {
     -- this can help with autocomplete. it sets the `additionalProperties` field on type definitions to false if it is not already present.
     schema_strict = true,
