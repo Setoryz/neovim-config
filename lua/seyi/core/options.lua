@@ -59,19 +59,20 @@ vim.api.nvim_create_autocmd("FileType", {
   desc = "Disable concealment for JSON files",
 })
 
+-- TODO: Limit this to just SSH sessions
 -- Enable osc52 clipboard
 -- This allows text yanked over ssh to be added to the system clipboard
-vim.g.clipboard = {
-  name = "OSC 52",
-  copy = {
-    ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-    ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
-  },
-  paste = {
-    ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
-    ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
-  },
-}
+-- vim.g.clipboard = {
+--   name = "OSC 52",
+--   copy = {
+--     ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+--     ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+--   },
+--   paste = {
+--     ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+--     ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+--   },
+-- }
 
 -- Settings for GO
 vim.api.nvim_create_autocmd("FileType", {
