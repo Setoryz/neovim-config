@@ -41,6 +41,14 @@ return {
       enabled = true,
       sources = {
         explorer = {
+          win = {
+            list = {
+              wo = {
+                number = true,
+                relativenumber = true,
+              },
+            },
+          },
           layout = {
             layout = {
               position = "right",
@@ -75,9 +83,29 @@ return {
     local keymap_opts = {}
 
     --#region explorer
-    keymap_opts.desc = "SN Toggle Explorer"
+    -- keymap_opts.desc = "SN Toggle Explorer"
+    -- keymap.set("n", "<leader>eo", function()
+    --   snacks.explorer()
+    -- end, keymap_opts)
+    --
+    keymap_opts.desc = "SN Open Explorer"
     keymap.set("n", "<leader>eo", function()
-      snacks.explorer()
+      local explorer_win = nil
+
+      for _, win in ipairs(vim.api.nvim_list_wins()) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        local ft = vim.bo[buf].filetype
+        if ft == "snacks_picker_list" then
+          explorer_win = win
+          break
+        end
+      end
+
+      if vim.api.nvim_get_current_win() ~= explorer_win and explorer_win then
+        vim.api.nvim_set_current_win(explorer_win)
+      else
+        Snacks.explorer()
+      end
     end, keymap_opts)
     --#endregion
 
