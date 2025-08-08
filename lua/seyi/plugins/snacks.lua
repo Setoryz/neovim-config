@@ -227,5 +227,10 @@ return {
     keymap.set("n", "<leader>fn", function()
       snacks.picker.notifications()
     end, keymap_opts)
+
+    keymap_opts.desc = "SN Open messages history"
+    keymap.set("n", "<leader>fm", function()
+      snacks.notifier.show_history()
+    end, keymap_opts)
   end,
 }
