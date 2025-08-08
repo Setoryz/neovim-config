@@ -41,6 +41,8 @@ return {
       enabled = true,
       sources = {
         explorer = {
+          hidden = true,
+          ignored = false,
           win = {
             list = {
               wo = {
