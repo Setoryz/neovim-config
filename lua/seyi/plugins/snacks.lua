@@ -39,6 +39,17 @@ return {
     input = { enabled = true },
     picker = {
       enabled = true,
+      icons = {
+        files = {
+          enabled = true,
+          dir = " 󰉋 ",
+          dir_open = "  ",
+          file = " ",
+          symlink = " ",
+          symlink_open = " ",
+          git = " ",
+        },
+      },
       sources = {
         files = {
           hidden = true,
@@ -93,11 +104,11 @@ return {
     local keymap_opts = {}
 
     --#region explorer
-    -- keymap_opts.desc = "SN Toggle Explorer"
-    -- keymap.set("n", "<leader>eo", function()
-    --   snacks.explorer()
-    -- end, keymap_opts)
-    --
+    keymap_opts.desc = "SN Reveal File in Explorer"
+    keymap.set("n", "<leader>er", function()
+      Snacks.explorer.reveal()
+    end, keymap_opts)
+
     keymap_opts.desc = "SN Open Explorer"
     keymap.set("n", "<leader>eo", function()
       local explorer_win = nil
@@ -114,7 +125,7 @@ return {
       if vim.api.nvim_get_current_win() ~= explorer_win and explorer_win then
         vim.api.nvim_set_current_win(explorer_win)
       else
-        Snacks.explorer()
+        Snacks.picker("explorer")
       end
     end, keymap_opts)
     --#endregion
@@ -211,11 +222,25 @@ return {
       snacks.picker.registers()
     end, keymap_opts)
 
-    keymap_opts.desc = "SN Search in file"
+    keymap_opts.desc = "SN Search history"
+    keymap.set("n", "<leader>fsh", function()
+      snacks.picker.search_history()
+    end, keymap_opts)
+
+    keymap_opts.desc = "SN Search Diagnostics"
+    keymap.set("n", "<leader>fsd", function()
+      snacks.picker.diagnostics()
+    end, keymap_opts)
+
+    keymap_opts.desc = "SN Search Diagnostics in buffer"
+    keymap.set("n", "<leader>fsD", function()
+      snacks.picker.diagnostics_buffer()
+    end, keymap_opts)
+
+    keymap_opts.desc = "SN Search in file/buffer"
     keymap.set("n", "<leader><space>/", function()
       snacks.picker.lines()
     end, keymap_opts)
-
     --#endregion
 
     keymap_opts.desc = "SN Open command history"
