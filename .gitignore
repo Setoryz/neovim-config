@@ -1,0 +1,21 @@
+.DS_Store
+Thumbs.db
+
+# Editor/OS
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Local config overrides
+.env
+.env.*
+.luarc.json
+
+# Logs
+*.log
+nvim.log
+
+# Generated docs
+doc/tags
