@@ -22,7 +22,8 @@ return {
       workspaces = {
         {
           name = "Personal Vault",
-          path = "/Users/seyi.odukoya/Developer/obsidian/seyi-mp",
+          -- Work PC vault path: /Users/seyi.odukoya/Developer/obsidian/seyi-mp
+          path = "~/Developer/obsidian/seyi-mp",
         },
       },
     },
