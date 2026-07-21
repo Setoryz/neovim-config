@@ -52,23 +52,60 @@ return {
 
     local last_update = 0
     local cached_result = " --"
-    local updating = false -- TODO: Use this to make get wakatime stats non ui blocking
+    local updating = false
+    local wakatime_cli = vim.fn.expand("~/.wakatime/wakatime-cli")
+
+    local function refresh_lualine()
+      local ok, lualine_instance = pcall(require, "lualine")
+      if not ok then
+        return
+      end
+
+      pcall(lualine_instance.refresh)
+    end
 
     --- Function to get wakatime stats for current day
     --- @returns string
+    local function refresh_wakatime_daily_stats()
+      if isHeadlessTest or updating then
+        return
+      end
+
+      updating = true
+
+      vim.system({ wakatime_cli, "--today" }, { text = true, timeout = 2000 }, function(result)
+        local next_result = cached_result
+
+        if result.code == 0 and type(result.stdout) == "string" and result.stdout ~= "" then
+          next_result = " " .. result.stdout:gsub("\n", ""):gsub("^.*:%s*", "")
+        end
+
+        vim.schedule(function()
+          cached_result = next_result
+          last_update = os.time()
+          updating = false
+          refresh_lualine()
+        end)
+      end)
+    end
+
     local function get_wakatime_daily_stats()
       if isHeadlessTest then
         return cached_result
       end
 
       local now = os.time()
-      if now - last_update > 300 then -- refresh every 5 mins
-        local result = vim.fn.system("~/.wakatime/wakatime-cli --today")
-        cached_result = " " .. result:gsub("\n", ""):gsub("^.*:%s*", "")
-        last_update = now
+      if now - last_update > 300 and not updating then
+        refresh_wakatime_daily_stats()
       end
+
       return cached_result
     end
+
+    vim.api.nvim_create_autocmd("VimEnter", {
+      callback = refresh_wakatime_daily_stats,
+      once = true,
+    })
 
     --- Get current cursor position for statusline and winbar display
     ---@return string

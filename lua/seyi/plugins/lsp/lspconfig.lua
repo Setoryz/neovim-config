@@ -160,32 +160,6 @@ return {
       },
     })
 
-    local has_kube_context = function()
-      local handle = io.popen("kubectl config current-context 2>/dev/null")
-      if not handle then
-        return false
-      end
-
-      local result = handle:read("*a")
-      handle:close()
-
-      return result ~= nil and result:match("%S+") ~= nil
-    end
-
-    local kube_schemas = {}
-
-    if has_kube_context() then
-      local ok, kube = pcall(require, "kubernetes")
-      if ok then
-        kube_schemas[kube.yamlls_schema()] = {
-          "k8s-*.yaml",
-          "k8s-*/**/*.yaml",
-          "!kustomization.{yml,yaml}",
-          "!*-values.{yml,yaml}",
-        }
-      end
-    end
-
     vim.lsp.config("yamlls", {
       on_attach = on_attach,
       capabilities = capabilities,
@@ -199,7 +173,7 @@ return {
             url = "",
           },
           -- schemas = schemastore.yaml.schemas(),
-          schemas = vim.tbl_deep_extend("force", schemastore.yaml.schemas(), kube_schemas, {
+          schemas = vim.tbl_deep_extend("force", schemastore.yaml.schemas(), {
             ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
             ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
             ["http://json.schemastore.org/prettierrc"] = ".prettierrc.{yml,yaml}",
