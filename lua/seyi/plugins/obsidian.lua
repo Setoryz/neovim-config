@@ -1,6 +1,6 @@
 return {
   {
-    "epwalsh/obsidian.nvim",
+    "obsidian-nvim/obsidian.nvim",
     version = "*", -- recommended, use latest release instead of latest commit
     lazy = true,
     ft = "markdown",
@@ -22,7 +22,7 @@ return {
       workspaces = {
         {
           name = "Personal Vault",
-          path = "~/Developer/repos/obsidian",
+          path = "/Users/seyi.odukoya/Developer/obsidian/seyi-mp",
         },
       },
     },
