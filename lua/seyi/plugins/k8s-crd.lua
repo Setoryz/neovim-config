@@ -2,28 +2,13 @@ local isHeadlessTest = vim.env.NVIM_HEADLESS_TEST == "1"
 
 return {
   "diogo464/kubernetes.nvim",
-  cond = function()
-    if isHeadlessTest then
-      return false
-    end
-
-    -- Run `kubectl config current-context` and check for success
-    local handle = io.popen("kubectl config current-context 2>/dev/null")
-    if not handle then
-      return false
-    end
-
-    local result = handle:read("*a")
-    handle:close()
-
-    return result ~= nil and result ~= ""
-  end,
+  ft = { "yaml", "yaml.ansible", "helm" },
   opts = {
     -- this can help with autocomplete. it sets the `additionalProperties` field on type definitions to false if it is not already present.
     schema_strict = true,
     -- true:  generate the schema every time the plugin starts
     -- false: only generate the schema if the files don't already exists. run `:KubernetesGenerateSchema` manually to generate the schema if needed.
-    schema_generate_always = true,
+    schema_generate_always = false,
     -- Patch yaml-language-server's validation.js file.
     patch = true,
     -- root path of the yamlls language server. by default it is assumed you are using mason but if not this option allows changing that path.
