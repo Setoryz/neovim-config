@@ -4,6 +4,7 @@ return {
   config = function()
     local lualine = require("lualine")
     local lazy_status = require("lazy.status") -- to configure lazy pending updates count
+    local isHeadlessTest = vim.env.NVIM_HEADLESS_TEST == "1"
 
     local colors = {
       blue = "#65D1FF",
@@ -56,6 +57,10 @@ return {
     --- Function to get wakatime stats for current day
     --- @returns string
     local function get_wakatime_daily_stats()
+      if isHeadlessTest then
+        return cached_result
+      end
+
       local now = os.time()
       if now - last_update > 300 then -- refresh every 5 mins
         local result = vim.fn.system("~/.wakatime/wakatime-cli --today")

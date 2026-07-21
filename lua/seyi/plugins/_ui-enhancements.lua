@@ -3,8 +3,10 @@ return {
   {
     "sphamba/smear-cursor.nvim",
     opts = {
-      stiffness = 0.8,
-      trailing_stiffness = 0.39,
+      -- stiffness = 0.8,
+      -- stiffness = 0.5,
+      -- trailing_stiffness = 0.5,
+      -- trailing_stiffness = 0.39,
       never_draw_over_target = false,
     },
   },

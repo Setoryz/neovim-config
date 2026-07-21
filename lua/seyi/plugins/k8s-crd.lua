@@ -1,6 +1,12 @@
+local isHeadlessTest = vim.env.NVIM_HEADLESS_TEST == "1"
+
 return {
   "diogo464/kubernetes.nvim",
   cond = function()
+    if isHeadlessTest then
+      return false
+    end
+
     -- Run `kubectl config current-context` and check for success
     local handle = io.popen("kubectl config current-context 2>/dev/null")
     if not handle then

@@ -5,7 +5,7 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     "mason-org/mason-lspconfig.nvim",
     { "antosha417/nvim-lsp-file-operations", config = true },
-    { "folke/neodev.nvim", opts = {} },
+    { "folke/lazydev.nvim", opts = {} },
     "b0o/schemastore.nvim",
     {
       "SmiteshP/nvim-navbuddy",
@@ -17,9 +17,6 @@ return {
     },
   },
   config = function()
-    -- import lspconfig plugin
-    local lspconfig = require("lspconfig")
-    local util = require("lspconfig/util")
     local navbuddy = require("nvim-navbuddy")
     local nvim_navic = require("nvim-navic")
 
@@ -67,10 +64,14 @@ return {
         keymap.set("n", "<leader>ld", vim.diagnostic.open_float, opts) -- show diagnostics for line
 
         opts.desc = "Go to previous diagnostic"
-        keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
+        keymap.set("n", "[d", function()
+          vim.diagnostic.jump({ count = -1 })
+        end, opts) -- jump to previous diagnostic in buffer
 
         opts.desc = "Go to next diagnostic"
-        keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
+        keymap.set("n", "]d", function()
+          vim.diagnostic.jump({ count = 1 })
+        end, opts) -- jump to next diagnostic in buffer
 
         opts.desc = "Show documentation for what is under cursor"
         keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
@@ -121,12 +122,6 @@ return {
       virtual_text = true,
     })
 
-    -- mason_lspconfig.setup_handlers({
-    --   -- default handler for installed servers
-    --   function(server_name)
-    --     vim.lsp.enable(server_name)
-    --   end,
-    -- })
     local on_attach = function(client, bufnr)
       if client.server_capabilities.documentSymbolProvider then
         nvim_navic.attach(client, bufnr)
@@ -142,7 +137,7 @@ return {
       capabilities = capabilities,
       on_attach = on_attach,
       filetypes = { "yaml.ansible", "yaml" },
-      root_dir = lspconfig.util.root_pattern("roles", "playbooks", "inventory", "ansible", "*ansible.cfg"),
+      root_markers = { "roles", "playbooks", "inventory", "ansible", "ansible.cfg" },
       settings = {
         ansible = {
           ansible = {
@@ -193,6 +188,7 @@ return {
 
     vim.lsp.config("yamlls", {
       on_attach = on_attach,
+      capabilities = capabilities,
       settings = {
         yaml = {
           schemastore = {
@@ -227,6 +223,77 @@ return {
       on_attach = on_attach,
       filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
       capabilities = capabilities,
+    })
+
+    -- Resolve the tailwind config for your app once
+    local function resolve_tw_config()
+      -- try the app-specific config first
+      local app_cfg = vim.fs.joinpath(vim.uv.cwd(), "apps/moniemarket-web/tailwind.config.ts")
+      if vim.uv.fs_stat(app_cfg) then
+        return app_cfg
+      end
+
+      -- fallback to a root config if you add one later
+      for _, name in ipairs({ "tailwind.config.ts", "tailwind.config.js", "tailwind.config.cjs" }) do
+        local found = vim.fs.find(name, { upward = true, stop = vim.uv.cwd() })[1]
+        if found then
+          return found
+        end
+      end
+      return nil
+    end
+
+    -- local tw_config = resolve_tw_config()
+    local tw_config = vim.fs.joinpath(vim.uv.cwd(), "apps/moniemarket-web/tailwind.config.ts")
+
+    vim.lsp.config("tailwindcss", {
+      on_attach = on_attach,
+      capabilities = capabilities,
+      filetypes = {
+        "css",
+        "less",
+        "postcss",
+        "sass",
+        "scss",
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+      },
+      settings = {
+        tailwindCSS = {
+          -- experimental = {
+          --   configFile = tw_config,
+          -- },
+          validate = true,
+          lint = {
+            cssConflict = "warning",
+            invalidApply = "error",
+            invalidScreen = "error",
+            invalidVariant = "error",
+            invalidConfigPath = "error",
+            invalidTailwindDirective = "error",
+            recommendedVariantOrder = "warning",
+          },
+          classAttributes = {
+            "class",
+            "className",
+            "class:list",
+            "classList",
+            "ngClass",
+          },
+          includeLanguages = {
+            eelixir = "html-eex",
+            elixir = "phoenix-heex",
+            eruby = "erb",
+            heex = "phoenix-heex",
+            htmlangular = "html",
+            templ = "html",
+            typescriptreact = "typescript",
+            javascriptreact = "javascript",
+          },
+        },
+      },
     })
 
     -- Configure Eslint
@@ -302,7 +369,7 @@ return {
       capabilities = capabilities,
       cmd = { "gopls" },
       filetypes = { "go", "gomod", "gowork", "gotmpl" },
-      root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+      root_markers = { "go.work", "go.mod", ".git" },
       settings = {
         gopls = {
           completeUnimported = true,
@@ -320,6 +387,28 @@ return {
     vim.lsp.config("sqlls", {
       on_attach = on_attach,
       capabilities = capabilities,
+    })
+
+    vim.lsp.enable({
+      "ansiblels",
+      "cssls",
+      "dockerls",
+      "emmet_ls",
+      "eslint",
+      "gopls",
+      "graphql",
+      "html",
+      "jsonls",
+      "lua_ls",
+      "prismals",
+      "pyright",
+      "quick_lint_js",
+      "sqlls",
+      "svelte",
+      "tailwindcss",
+      "terraformls",
+      "ts_ls",
+      "yamlls",
     })
   end,
 }
